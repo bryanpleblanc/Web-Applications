@@ -1,0 +1,255 @@
+<!doctype html>
+<html>
+<head>
+    <title>Code Editor</title> <!--Changes tab title-->
+
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+ 	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+ 	
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>	
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+
+
+<style>
+
+	body {
+		margin:0;
+		padding:0;
+		font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+   		font-weight: 300;
+	}
+	
+	#menuBar {	
+		width:100%;
+		height:40px;
+		background-color:#FF9000;
+		border-bottom:2px solid #DC5C05;
+		color:white;
+	}
+	
+	#logo {
+		padding:5px 0 0 20px;
+		font-weight:bold;
+		font-size:120%;
+		float:left;
+		
+	}
+	
+	#buttonDiv {
+		float:right;
+		padding:5px 10px 0 0;
+	}
+	
+	#runButton {
+		font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+		font-size:100%;
+		border-radius:2px;
+		background-color:grey;
+		color:white;
+	}
+	
+	#buttonList {
+		width:193.5px;
+		margin:0 auto;
+		list-style:none; 
+		border:2px solid #978B7D;
+		border-radius:3px;
+		height:27px;
+		padding:0;
+		position:relative;
+		top:5px;
+	}
+	
+	#buttonList li {
+		float:left;
+		border-right:1px solid #978B7D;
+		padding:5px 7px;
+		
+	}
+	
+	.clear {
+		clear:both;
+	}
+	
+	.codeWindow {
+		height:100%;
+		width:50%;
+		float:left;
+		position: relative; /* I added this to because the HTL .codeLabel was positioning it to the browser window we want to position it to the codeWindow*/
+		
+	}
+	
+	.codeWindow textarea {
+		width:100%;
+		height:100%;
+		border:none;
+		border-right:1px solid grey;
+		box-sizing:border-box; /* include border in the width of the box */
+		font-family:monotype;
+		font-size:90%;
+		padding:5px;
+		
+	}
+	
+	.codeLabel {
+		position:absolute; /* Takes it out of the flow of the page... meaning it will be positioned on top of other elements */ 
+		right:10px;
+		top:10px;
+	}
+	
+	#CSSWindow, #JSWindow {
+		display:none;
+	}
+	
+	iframe {
+		height:100%;
+		position:relative;
+		left:20px;
+		border:none;
+	}
+	
+	.clicked {
+		background-color:grey;
+	}
+	
+
+
+		
+
+	
+
+	
+
+
+
+</style>
+
+
+</head>
+
+<body>
+
+	<div id="wrapper">
+	
+		<div id="menuBar">
+			<div id="logo">Code Editor</div>
+			
+			<div id="buttonDiv">
+				<button id="runButton">Run</button>
+			</div>
+			
+			<ul id="buttonList">
+				<li class="buttonItem clicked">HTML</li>
+				<li class="buttonItem">CSS</li>
+				<li class="buttonItem">JS</li>
+				<li class="buttonItem clicked" style="border:none">Result</li>
+			</ul>
+			
+		</div>
+		
+		<div class="clear"></div>
+		
+		
+		
+		<div class="codeWindow" id="HTMLWindow">
+			<div class="codeLabel">HTML</div>
+			<textarea id="htmlCode"><div id="test"></div></textarea>
+		</div>
+		
+		
+		
+		<div class="codeWindow" id="CSSWindow">
+			<div class="codeLabel">CSS</div>
+			<textarea id="cssCode"> html { background-color:blue; } </textarea>
+		</div>
+		
+		
+		
+		<div class="codeWindow" id="JSWindow">
+			<div class="codeLabel">JS</div>
+			<textarea id="jsCode">document.getElementById("test").innerHTML="Its working";</textarea>
+		</div>
+		
+		
+		<div class="codeWindow" id="ResultWindow">
+			<div class="codeLabel">Result</div>
+			<iframe id="resultFrame"></iframe>
+		</div>
+	
+	
+	</div>
+
+	
+	
+	
+	<script>
+		var windowHeight = $(window).height(); 					// gets the window height using jquery
+		var menuBarHeight = $("#menuBar").height(); 			// gets height of orange menuBar
+		var codeWindowHeight = windowHeight - menuBarHeight; 	//gets the difference between menuBar and window height
+		$(".codeWindow").height(codeWindowHeight+"px");  		// sets the codeWindow height
+		
+		
+		
+		/*
+		* When button is pressed we want to apply "clicked" and 
+		* if it is applied we want to remove "clicked".
+		*
+		* The "this" command to select the particular li that was clicked
+		*/
+		$(".buttonItem").click(function() {
+			$(this).toggleClass("clicked"); // 
+			
+			var activeDiv=$(this).html();
+			
+			$("#"+activeDiv+"Window").toggle();
+			
+			// we need to know how many divs are currently active so we can adjust the width percentage
+			// then set their widths accordingly 
+			// we can use filter to help us
+			
+			// its going to loop through all divs with class "codeWindow"
+			// function will then return true if this div is active/ displayed
+			var showingDivs=$(".codeWindow").filter(function() {
+				return($(this).css("display")!="none");
+			}).length; // finds length of array or number of active divs 
+			
+			var width = 100/showingDivs; 
+			
+			// set width of the new codeWindow... NOTE: see box-sizing in CSS
+			$(".codeWindow").width(width+"%");
+		});
+		
+		
+		/*
+		* need to fill result iframe with contents from HTML CSS JS
+		* starting with HTML
+		*/
+		$("#runButton").click(function() {
+		
+		
+			/*
+			* select iframe, use contents function select the
+			* contents of the iframe and use find() function to find the 
+			* contents with in html and then set the iframe to the contents 
+			* from html and css
+			*/
+			$("iframe").contents().find('html').html("<style>"+$('#cssCode').val()+"</style>"+$("#htmlCode").val());
+			
+			//Dangerous FUNCTION
+			//DANGER 
+			//DANGER
+			//Security Risk when online!!!
+	
+			document.getElementById('resultFrame').contentWindow.eval($('#jsCode').val());
+		
+			
+		});
+		
+	</script>
+		 
+
+
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!doctype html>
+<html>
+<head>
+    <title>Zip Spy</title> <!--Changes tab title-->
+
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
+    <!-- BootStrap Links -->
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+	
+	<!-- jQuery Links -->
+	<script type="text/javascript" src="//code.jquery.com/jquery-latest.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+	
+	<!-- Javascript Links -->
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+
+<!-- CSS Start -->
+<style>
+
+	html, body {           					
+		height:100%;							
+	}
+	.container {
+		background-image:url("images/street_shop.jpg");
+		width:100%;
+		height:100%;
+		background-size:cover; 					
+		background-position:center;				
+		padding-top: 100px;
+	}
+	
+	.center {
+		text-align:center;
+	}
+	
+	.square, .square:before{ 
+  		position:absolute;
+  		 
+	}
+	.square {  
+  		width:420px;
+  		height:420px;
+  		z-index:0;
+  		margin:11%;  						
+  		padding:40px;
+  		background: hsla(210, 90%, 20%, 0.8);   
+	}
+	
+	.square:before {
+  		content:'';
+  		z-index:-1;  
+  		width:440px;
+  		height:440px;
+  		border: 6px solid hsla(10, 100%, 100%, 0.6); 
+  		/* Hue Think of a color wheel. Around 0o and 360o are reds 120o are greens, 240o are blues. Use anything in between 0-360. Values above and below will be modulus 360.*/
+  		/* Saturation  0% is completely denatured (grayscale). 100% is fully saturated (full color). */
+  		/* Lightness 0% is completely dark (black). 100% is completely light (white). 50% is average lightness. */
+  		/* alpha - Opacity/Transparency value. 0 is fully transparent. 1 is fully opaque. 0.5 is 50% transparent.  */
+  		top:-10px;
+  		left:-10px; 
+	}
+	
+	h1 {
+		margin-top:75px;
+		margin-bottom:40px;
+	}
+	
+	.lead {
+		font-size:120%;
+	}
+	
+	.alert {
+		
+		max-width:800px;
+		display:none; /* Don't want a display until city weather found */
+	}
+	
+	.color {
+		color:white;
+	}
+	
+	.whitebackground {
+		background-color:white;
+		padding:20px;
+		border-radius:20px;
+	}
+	
+	#findMyPost {
+		margin-bottom:10px;
+	}
+	
+
+</style>
+
+
+</head>
+<body>
+
+<!-- HTML Start -->
+
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 col-md-offset-3 center"> <!-- Could stick solid white background class here as an option later...  -->
+				<div class="square">
+					<h1 class="center color">Zip Spy</h1>
+					<p class="lead center color">Enter any address to find its postcode.</p>
+					<form>
+						<div class="form-group">
+							<input type="text" name="address" class="form-control" id="address" placeholder="Eg. 501 Main Street, Chicago, IL"/>
+						</div>
+						<button id="findMyPost" class="btn btn-success btn-lg">Get Code</button>
+						<div class="alert alert-success" id="success"></div>
+						<div class="alert alert-danger" id="fail"></div>
+						<div class="alert alert-danger" id="connectionFail">Connection failed. Please try again later.</div>
+					</form>
+
+				</div>
+				
+			</div>
+		
+		</div>
+							
+
+	</div>
+	
+	
+
+
+
+
+
+
+<!-- JS / jQuery Start -->
+<script>
+	
+	
+	/*
+	* Function converts users address into a URL friendly variable
+	* after the users clicks the button. 
+	*/
+	$("#findMyPost").click(function(event) {
+		event.preventDefault(); 
+		var str = document.getElementById("address").value;
+		var replaced = str.split(' ').join('+');
+		var result = false;
+		$(".alert").hide();
+		
+		
+		/*
+		* Function inserts URL friendly variable into google API URL
+		*/
+		$.ajax( {
+			type: "GET",
+			url:"https://maps.googleapis.com/maps/api/geocode/xml?address="+replaced+"&key=GOOGLE API KEY HERE", // Address used to be: 1600+Amphitheatre+Parkway,+Mountain+View,+CA
+			dataType:"xml",
+			success: processXML, 																									 // if able to connect jump to processXML function
+			error: error 																											// if error was found jump to error function
+		});
+		
+		
+		
+		/*
+		* Function is used in case connection to google fails
+		* and/ or the users internet connection fails.
+		* You can test this but removing the h from https
+		*/
+		function error() {
+			//alert("failed");
+			$("#connectionFail").fadeIn();
+		}
+		
+
+		
+		
+		/*
+		* Function processes the xml file to find the post code
+		* and and prints the post code using the alert-succcess
+		*/
+		function processXML(xml) {
+			$(xml).find("address_component").each(function() {
+		 		if ($(this).find("type").text() == "postal_code") {
+		 			var data = $(this).find("long_name").text();
+		 			//alert(data);
+		 			$("#success").html("Zip Spy found: <strong>" + data + "</strong>").fadeIn();
+		 			result = true;
+		 		};
+		 	});
+		 	
+		 	
+		 	if (result == false) {																									// if no post code could be found post alert-fail
+		 		$("#fail").html("Could not find a post code.").fadeIn();
+		 	}
+		}
+ 	});
+	
+
+</script>
+		
+
+
+</body>
+</html>

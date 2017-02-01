@@ -1,0 +1,255 @@
+     body {                             			 
+     	margin:0;									/* removes default margin from body tag */
+     	font-family:arial,helvetica,sans-serif; 	/* all font in body */
+     }	
+     								
+	 #topbar {
+	 	background-color:#7A0000;
+	 	width:100%;                     			/* 100% spans the entire page */    
+	 	height:40px;
+	 	color:white;								/* all text in topbar is white */  
+	 }
+	 
+	 .fixedwidth {
+	 	width:1050px;
+	 	margin: 0 auto;								/* centers a div in another div */ 
+	 }
+	 
+	 #logodiv {
+	 	padding:9px 0 2px 0;						/* adds padding (margin) to top of bbc logo ... Note I later changed top padding to padding to fix border height problems */ 
+	 	float:left;									/* this ensures everything else will float left of the bbc logo */ 
+		border-right:1px solid #990000;				/* adds a light border to the right of the logo */ 
+	 	padding-right:10px;							/* gives padding between logo and light border from above */ 
+	 }
+	 
+	 #signindiv {									/* sign intext only */ 
+	 	padding:3px 80px 11px 20px;					/* top right bottom (0px) left */ 
+	 	font-weight:bold;
+	 	font-size:0.8em;	
+	 	float:left;									/* we want the sign in to float left as well */ 
+	 	border-right:1px solid #990000;				/* adds a light border to the right */
+	 }
+	 
+	 #signindiv img {								/* sign in div image only (to move image) */ 
+	 	position:relative;							/* image will move down but text wont */
+	 	top:6px;
+	 }
+	 
+	 #toplistdiv {
+	 												
+	 }
+	 	
+	 	
+	 #toplistdiv ul {								/* ul = unordered list */
+	 	margin:0;	   						    	/* removes default margin */
+	 	padding:0;									/* removes padding so text shifts all the way to the left */
+	 }
+	 
+	 #toplistdiv li {								/* li = list item */
+	 	float:left;									/* need to remember to float everything to the left */
+	 	list-style:none;							/* removes dots from unordered lists */
+	 	font-weight:bold;
+	 	font-size:0.9em;
+	 	border-right:1px solid #990000;				/* need a border at the end of each li */
+	 	padding:10px 20px 13px 20px;				/*  ... Note adding padding to li from ul  */
+	 	
+	 }
+	 
+	 #searchdiv {
+	 	float:left;	
+	 	padding:10px 0 0 10px;
+	 }
+	 
+	 #searchdiv input {
+	 	height:18px;								/* change height of search bar */
+	 	width:160px;								/* obviously changes width of search bar */
+	 	border:none;								/* strangely removing border made search bar longer and enabled me to create a width */
+	 	padding-left:10px;							/* adds some padding to left of text */
+	 	font-size:0.8em;							/* anything larger the bar disappears */
+	 	background-image: url("images/bbc_search.png");
+	 	background-repeat: no-repeat;
+	 	background-position: right; 
+    	
+	 }
+	 
+	.break {
+	 	clear:both;									/* clears floats from previous bar ... may not be needed?????*/
+	 }
+	 
+	 #newsbar {
+	 	background-color:#990000;
+	 	width:100%;                     			/* 100% spans the entire page */    
+	 	height:90px;
+	 	color:white;								/* all text in topbar is white */  
+
+	 }
+	 
+	 #newsbar p {
+	 	margin:0;
+	 	padding-top:10px;
+	 	float:left;
+	 }
+	 
+	 #newsheader {
+	 	font-size:3.0em;
+	 }
+	 
+	 #uk {
+	 	font-size:0.6em;
+	 }
+	 
+	 #rss {
+	 	float:right;
+	 	margin-top:40px;
+	 	font-size:0.9em;
+	 }
+	 
+	 #rss img { 									/* For resizing RSS image */
+		height:14px;
+	}
+	
+	#topicmenu {
+	}
+	
+	#topicmenu ul {
+		background-color:#3E0C0D;
+		margin:0;	
+		padding:5px 0 0 0;   						/* padding top only */    	
+	 	height:20px;								/* height of background color */
+	}
+	
+	#topicmenu li {
+		list-style:none;
+		font-size:0.8em;
+		padding:0 5px 0 5px;						/* need padding right and left between list items*/ 
+		float:left;
+		border-right:1px solid #990000;
+
+	}
+	
+	.selected {										/* changing the highlighted UK button to grey */    
+		background-color:#EDEDED;					/* changes the highlight color to grey */ 
+		color:#666666;								/* changes text color to darker grey */ 
+		height:19px;								/* changes the height of the background color*/ 
+		position:relative;							/* moves the background color and text up (not what we wanted) */ 
+		top:-4px;									/* compensating for the over adjustment in text height (now change background color height) */ 
+		padding-top:4px !important;					/* finally helps move text down but padding used in "topicmenu li" is overriding the padding here */ 
+	}
+	
+	
+	#content {
+	 	color:#535353;
+	 	width:100%;                     			/* 100% spans the entire page */    
+		font-size:0.8em;
+	 }
+	 
+	 .date {
+	 	font-weight:bold; 
+	 }
+	 
+
+	 
+	 .headlineimage {
+	 	float:left;
+	 }
+	 
+	 .newsitem {
+	 	position:relative;
+	 	top:-15px;
+	 	left:15px;
+	 	width:280px;
+	 	float:left;
+	 	font-size:1.0em;
+	 }
+	 
+	 .newsitem a {
+	 	color:#5579A0;
+	 }
+	 
+	 .pollution {
+	 	color:#1F4F82;
+	 	font-size:1.2em;
+	 }
+	 
+	 
+	 a {
+	 	text-decoration:none;
+	 }
+	 
+	 a:hover {
+	 	text-decoration:underline;
+	 }
+	 
+	 .video {
+	 	background-image: url("images/bbc_play_icon.png");
+	 	background-repeat: no-repeat;
+	 	background-position: left; 
+	 	padding-left:23px;
+	 }
+	 
+	 .linebreak {
+	 	line-height:1.6em; 							/* added line break below but now the lines are too close... we need to make slightly larger */ 
+	 }
+	 
+	 .audio {
+	 	background-image: url("images/bbc_audio_icon.png");
+	 	background-repeat: no-repeat;
+	 	background-position: left; 
+	 	padding-left:23px;
+	 }
+	 
+	 #watchlisten {
+	 	position:relative;
+	 	top:-80px;
+	 	background-color:#EEEEEE;
+	 	float:right;
+	 	width:385px;
+
+	 }
+	 
+	 h2 {
+	 	color:#505050;
+	 	font-size:1.8em;
+	 	position:relative;
+	 	top:-10px;
+	 	left:10px;
+	 
+	 }
+	 
+	 .boximage {
+	 	float:right;
+	 	margin-top:15px;
+	 	margin-right:10px;
+	 }
+	 
+
+	 .newsbar {
+	 	position:relative;
+	 	top:-25px;
+	 	float:left;
+	 	width:385px;
+	 }
+	 
+	 
+	 #watchlisten ul {
+	 	float:left;
+	 	margin:0;
+	 	padding:0 10px 10px 10px;
+	 }
+	 
+	 
+	 #watchlisten li {
+	 	list-style:none;
+	 	background-image: url("images/bbc_live_icon.png");
+	 	background-repeat: no-repeat;
+	 	background-position:left center;
+	 	padding:10px 0 10px 40px;
+	 	font-size:1.1em;
+	 }
+	 
+	 
+	 .borderline {
+	 	border-bottom:1px solid #DDDDDD;
+	 
+	 
+	 }

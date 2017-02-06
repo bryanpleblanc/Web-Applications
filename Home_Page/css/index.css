@@ -1,0 +1,297 @@
+    /* NavBar */
+    .navbar {										/* Remove the navbar's default margin-bottom and rounded borders */ 
+      margin-bottom: 0;
+      border-radius: 0;
+    }
+    
+	header { 										/* Changes navbar color to black */
+		background-color: #535960;;
+	}
+	
+	.icon-bar {
+   		background-color:white !important;
+	}
+	
+	nav a:link, nav a:visited, nav a:active {     	/* Makes default links to white */
+		color: white; 
+	}
+	
+	nav a:hover { 									/* Makes hovered link blue */
+		color: #1AC8FC; 
+	}
+	
+	
+	nav a.active { 									/* Makes active link blue */
+		background-color: #1AC8FC; 
+	}
+
+	
+	.nav > li > a:hover, .nav > li > a:focus {      /* Change navbar link box color to same color as navbar header in this case black. */
+    	background-color: #535960;;
+    	text-decoration: none;
+	}
+	/* /NavBar */
+
+
+    
+     /* Home */
+	#backgroundImage {
+  		min-height: 100vh; /* vh = viewport height */
+  		background-image:url("../images/LivingRoom.jpg");
+  		background-size: cover; 
+  	}
+  	
+  	.homeMargin {
+  		margin-bottom:550px;
+  	}
+  	
+  	ul {
+  		list-style-type: none;
+	}
+	
+	#ul2 > li {
+		margin-right:100px;
+	}
+	
+	.animated {										/* Delays all animations by 1 second */
+    	-webkit-animation-delay: 1s; /* Safari 4.0 - 8.0 */
+    	animation-delay: 1s;
+	}
+	
+	.fa { 											/* Changes all font awesome icons to black */
+  		color: #000000; 
+	}
+	
+	
+	.fa-arrow-circle-down:hover { 					/* Changes arrow font awesome icons to blue on hover */
+  		color:#1AC8FC 
+	}
+	
+	
+	@media (max-width: 480px) {						/* Removes arrow font on a small device*/
+	.arrowDown {
+    	display: none; 
+    } 
+    #ul2 > li {
+		width: 90%; 
+	}
+    }
+    /* /Home */
+    
+    
+    
+    
+    /* About Me */
+    .divider-new { 									/* For bars between h2's */
+  		display: flex;
+  		flex-direction: row;
+  		justify-content: center;
+  		align-items: center;
+  		font-weight: 300;
+  		margin-top: 45px;
+  		margin-bottom: 45px;
+	}
+	
+	.divider-new h2 { 								/* For bars between h2's */
+  		margin-top: 5px;
+	}
+
+	.divider-new:before { 							/* Bar before h2 */
+  		content: '';
+  		height: 1.5px;
+  		background: #777;
+  		flex: 1;
+  		margin: 0 .45em 0 0;
+  		
+	}
+
+	.divider-new:after { 							/* Bar after h2 */
+  		content: '';
+  		height: 1.5px;
+  		background: #777;
+  		flex: 1;
+  		margin: 0 0 0 .45em;
+	}
+	
+  	#personalImage {
+  		max-width: 300px;
+  		max-height:300px;
+  		border-radius:5%;
+  		border: 2px solid #404040;
+  		
+  	}
+
+	.about {
+		text-align:left;
+		
+	}
+	
+	.about h3 {
+		margin-top:7px;
+		margin-bottom:7px;
+		color: #333;
+		font-family: 'Raleway', sans-serif;
+		font-size: 16px;
+		font-weight: 600;
+		text-transform: capitalize;
+	}
+	
+	.about p {
+		margin: 0 auto;
+		color: #777;
+		font-family: 'Lato', sans-serif;
+		font-size: 13px;
+	}
+	
+	.skill-set p {
+		font-family: 'Raleway', sans-serif;
+		font-size: 14px;
+		color: #777;
+		margin: 0;
+	}
+	
+	.skill-set .progress {
+		height: 8px;
+	}
+	
+	
+	#skillMargin {
+		margin-top:70px;
+	}
+	
+	#skillSetText {
+		font-size:200%;
+		font-weight:bold;
+    	text-shadow: -0.5px 0 black, 0 0.5px black, 0.5px 0 black, 0 -0.5px black;
+	}
+	
+	#color0 {										/* Blue for skills font */
+		color:#1AC8FC; 
+	}
+	
+	#color1 { 										/* Pink for skills font */
+		color:#FC0F69; 
+	}
+	
+	#color2 { 										/* Yellow for skills font */
+		color:#FFD438; 
+	}
+	
+	#color3 { 										/* White for skills font - Currently not used */
+		color:#FFF6FC; 
+	}
+	
+	/* /About Me */
+	
+
+
+
+
+
+
+	/* Portfolio */
+	.textStyles {
+		text-align:center;
+		font-family: 'Raleway', sans-serif;
+		font-size: 14px;
+		color: #777;
+	}
+	
+	.textStyles h4 {
+		margin-top:15px;
+		color: #777;
+		font-family: 'Raleway', sans-serif;
+		font-size: 16px;
+		font-weight: 600;
+		text-transform: capitalize;
+		text-align:center;
+	}
+	
+	.descriptionStyles {
+		margin-top:5px;
+		font-size:14px;
+		color:#777;
+		
+	}
+	
+	.transBack {
+    	background-color: #ffffff;
+    	display: inline-block;
+    	opacity: 0.8;
+    	filter: alpha(opacity=60); 					/* For IE8 and earlier */
+	}
+	
+
+	hr {
+		width:75%;
+		border-color:#A9A9A9; 						/* dark grey*/
+		
+	}
+	
+	.thumbnail {
+		background-color:#D9D9D9;
+		max-width:100%;
+		background-size: cover; 
+	}
+	
+  	#projectImages {
+  		margin-top:5px;
+  		height:230px;
+  		width:250px;
+  		border: 1px solid #A9A9A9;
+  	}
+    /* /Portfolio */
+    
+    
+    
+    
+    
+    /* Connect */
+     #map {
+        height: 275px;
+     	width: 500px;
+     	border: 2px solid #404040;
+     	margin: 0 auto 0 auto;
+    }
+    
+    @media (max-width: 520px) {
+	.map {
+    	display:none; 
+    } 
+    }
+    
+    
+    .connectStyles {
+    	text-align:center;
+		font-family: 'Raleway', sans-serif;
+		font-size: 20px;
+		color: #777;
+    }
+    
+	.fontAwesomeAnime:hover {
+  		transform: scale(1.5);
+  		transition: 0.75s; 
+  		color:#1AC8FC;
+  	}
+    /* /Connect */
+    
+    
+    
+    
+    
+ 	/* Footer */
+    footer {
+    	margin-top:60px;
+    	background-color: #535960; 					/* blue = #B0D1FB; grey = #f2f2f2 */
+      	padding: 25px;
+	}
+
+	#copyright {
+		color: #FFF6FC;
+	 	font-family: "Roboto", sans-serif;
+		font-size:100%;
+		text-align:center;
+		margin-top:30px;
+	}
+	/* /Footer */
+	

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  	<title>Local Weather</title>
+  	<meta charset="utf-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+	<link href="https://fonts.googleapis.com/css?family=Raleway|Roboto" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+  
+<style>
+
+html {
+	background: url("/images/") no-repeat center center fixed; 
+  	background-size: cover;
+  	width:100%;
+	height:100%;
+  	
+}
+
+body {
+	font-family: 'Raleway', sans-serif;
+
+}
+
+
+
+
+#boxer {
+	background: hsla(0, 100%, 100%, 0.6);
+	height:350px;
+	width:500px;
+	position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+
+}
+
+@media (max-width: 525px) {
+  #boxer {
+    width: 90%;
+  };
+}
+
+#temp {
+	font-size:150%
+}
+
+#degree {
+
+	font-size:150%;
+
+}
+
+h2 {
+	text-decoration:underline;
+
+}
+
+</style>
+  
+  
+  
+  
+</head>
+
+<body>
+
+	
+
+  <div class="text-center" id="boxer">
+  	<h2>Your City</h2>
+  	<h3 id="city">City Unknown</h3>
+  	
+  	<h2>Temperature</h2>
+  	<h3 id="tempUnit">
+  	 <span id="temp">Temperature Unknown</span><span id="degree">&deg </span> <button id="unit" class="btn btn-primary btn-lg">Celsius</button>
+  	</h3>
+  	
+  	
+  	<h2>Conditions</h2>
+  	<h3 id="weatherConditions">Weather Conditions Unknown</h3>
+  </div>
+
+	
+				
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+<script>
+
+	// global variables 
+	var temperature;
+	var celsius = true; 
+	
+
+	// launch code when pages loads 
+	$(document).ready(function() {
+		getLocation();
+	
+	});
+	
+	
+	/*
+	* Method gets the json file of the users location and saves data into location variables 
+	* At the end of method, method getWeather is called passing in latitude and longitude data
+	*/
+	function getLocation() {
+		$.getJSON("http://ipinfo.io/json?", function(json) {
+			//$("#city").html(JSON.stringify(json));
+			var city = json.city;
+			var latlong = json.loc;
+			var args = latlong.split(',');
+			var lat = args[0]; // latitude data  
+			var log = args[1]; // longitude data 
+			document.getElementById("city").innerHTML = city;
+			getWeather(lat,log);
+			
+		});
+	}
+	
+	/*
+	* Method uses lat and long data to insert into ULR for JSON result 
+	* Weather description and temperature in metric is returned and it is added to html divs 
+	* Later the weather description is parsed, and key words are searched for background image update 
+	*/
+	function getWeather(lat, log) {
+		$.getJSON("http://api.openweathermap.org/data/2.5/weather?lat="+ lat +"&lon=" + log +"&units=metric&cnt=1&appid=839e1e7fdf4c91b6e8b6c10d073d6554", function(json) {
+			temperature = json.main.temp;
+			var description = json.weather[0].description;
+			description = description.charAt(0).toUpperCase() + description.substring(1);
+			$("#temp").html(Math.round(temperature));
+			$("#weatherConditions").html(description);
+			
+			
+			// Background image matching 
+			var newDes = description.toLowerCase(); 
+			if (newDes.includes("rain")) { // if rain exists
+				$('html').css("background-image", "url(images/rain.jpg)"); 
+			} else if (newDes.includes("cloud")) { // if cloud exists
+				$('html').css("background-image", "url(images/cloudy.jpg)"); 
+			} else if (newDes.includes("sun")) { // if sun exists
+				$('html').css("background-image", "url(images/sun.jpg)"); 
+			} else if (newDes.includes("mist") || newDes.includes("fog")) { // if mist exists
+				$('html').css("background-image", "url(images/mist.jpg)"); 
+			} else if (newDes.includes("snow")) { // if mist exists
+				$('html').css("background-image", "url(images/snow.jpg)"); 
+			} else {
+				$('html').css("background-image", "url(images/other_weather.jpg)");
+			}
+			 
+		});
+	}
+	
+	/*
+	* Method waits for unit button to be click and the celsius data turns into fahrenheit and vice versa 
+	*/
+	$("#unit").on("click", function(){ 
+		if(celsius) {
+			var newTemp = (temperature * 1.8) + 32;
+			$("#temp").html(Math.round(newTemp));
+			$("#unit").html("Fahrenheit");
+			celsius = false;
+			
+		} else {
+			$("#temp").html(Math.round(temperature));
+			$("#unit").html("Celsius");
+			celsius = true;
+			
+		}
+    });
+
+
+
+
+</script>
+
+</body>
+</html>

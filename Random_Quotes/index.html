@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  	<title>Random Quotes</title>
+  	<meta charset="utf-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto|Inconsolata|Droid+Sans">
+	<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+  
+<style>
+
+body {
+	
+	
+	
+}
+
+
+#boxer {
+	background-color:white;
+	height:260px;
+	width:400px;
+	position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+
+}
+
+#setTweet {
+	float:left;
+	margin-left:40px;
+	
+
+}
+
+#quoteStyles {
+	font-size:130%;
+	
+}
+
+#authorStyles {
+	float:right;
+	
+}
+
+
+
+#getQuote {
+	float:right;
+	margin-right:40px;
+	
+	
+}
+
+#quoteText {
+	height:150px;
+	width:100%;
+	padding:10px 10px 10px 10px;
+
+	font-family: 'raleway', sans-serif;
+}
+
+#buttons{
+	font-family: 'Roboto', sans-serif;
+}
+
+
+.button {
+	margin-top:60px;
+ 	width:75px;
+ 	height:30px;
+ 	font-size:110%;
+ 	border-radius:5%;
+ 	border-style: none;
+ 	color:white;
+}
+
+@media (max-width: 400px) {
+  	#boxer {
+    	width:100%;
+  	};
+}
+
+
+
+
+</style>
+  
+  
+  
+</head>
+
+<body>
+
+  <div class="text-center" id="boxer">
+  	<div id="quoteText">
+  		<div id="quoteStyles">"<span id="quote"> </span>"</div></br>
+  		<div id="authorStyles">~<span id="author"> </span></div>
+  	</div>
+  	
+
+  	
+  	<div id="buttons">
+  		<button class="button" id="setTweet">Tweet</button>
+  		<button class="button" id="getQuote">Quote</button>
+  	
+  	</div>
+  	
+  	
+  
+  </div>
+
+	
+				
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+<script>
+
+	var randomQuote;
+	var randomAuthor;
+	
+	/*
+	* On page load get random quote 
+	*/
+	$(document).ready(function() { 
+		getRandomQuote();
+	});
+	
+	
+	
+	/*
+	* Click event listener for random quote button
+	*/
+    $("#getQuote").on("click", function() {
+    	getRandomQuote();
+    });
+    
+    
+    
+    /*
+	* Click event listener for twitter post 
+	*/
+    $("#setTweet").on("click", function(){ 
+    	window.open("https://twitter.com/intent/tweet?text="+randomQuote + " ~ " + randomAuthor);
+    });
+    
+    
+    
+	/*
+	* Function gets a random quote from the api and prints to screen
+	*/	
+	function getRandomQuote() {
+		$.getJSON("http://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=jsonp&jsonp=?", function(json) {
+			 randomQuote = json.quoteText; 
+			 randomAuthor = json.quoteAuthor;
+			 // if author doesn't exist
+			 if (randomAuthor == "") {
+			 	randomAuthor = "unknown author";
+			 }
+			 
+			 // changes background on every new quote
+			 changeBackground(getColor());
+			 $("#quote").html(randomQuote);
+			 $("#author").html(randomAuthor);
+      	});
+    }
+    
+
+
+    /*
+	* Function changes background with color from getColor
+	*/	
+    function changeBackground (x) {
+			 	$("body").css("background-color", x);
+			 	$("#quoteText").css("color", x);
+			 	$("button").css("background-color", x);
+	}
+	
+	
+	
+	/*
+	* Gets a random color from the color array 
+	*/	
+	function getColor () {
+		var colorArr = ["#C54D57", "#FF6B6B", "#4FCCC4", "#556272", 
+		"#AB333D", "#8A6878", "#FF6600", "#6E2C5C", "#017C8E"]
+		var randomNum = Math.floor(Math.random() * 8) + 1;
+	
+		return colorArr[randomNum];
+	}
+
+
+
+</script>
+
+</body>
+</html>

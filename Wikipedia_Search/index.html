@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  	<title>Wiki Search</title>
+  	<meta charset="utf-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+	<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+  
+<style>
+
+	#boxer {
+		font-family: 'Raleway', sans-serif;
+		background: hsla(0, 100%, 100%, 0.6);
+		height:600px;
+		width:600px;
+		position: absolute;
+    	top:0;
+    	bottom: 0;
+    	left: 0;
+    	right: 0;
+    	margin: auto;
+	}
+
+	input {
+		width:400px;;
+		height:35px;
+		
+	}
+
+
+	.crazy {
+		position: relative;
+    	display: block;
+    	margin : 0 auto;
+	}
+
+	#searchResults {
+		margin-bottom:25px;
+		border:2px solid black;
+		width:100%;
+		height:150px;
+		display: block;
+		padding:0px 10px 0px 10px;
+	}
+
+	#searchResults:hover {
+		border-color:orange;
+	}
+
+	#resultStyles {
+		text-decoration: none;
+		color:gray;
+	}
+	
+	@media screen and (max-width: 625px) {
+  		#boxer {
+    		width: 90%;
+  		};
+	}
+	
+	@media (max-width: 625px) {
+  		#searchBox {
+    		width:100%;
+  		};
+	}
+	
+	#inner {
+		margin-bottom:25px;
+	}
+	
+
+	
+	
+	
+
+	
+
+</style>
+  
+
+</head>
+
+<body>
+
+
+	
+
+  <div id="boxer">
+  	<div id="inner">
+  		<h1 class ="text-center" id="title">Wikipedia Viewer</h1>
+  		<div class="text-center">
+			<div class="input-group crazy">
+    			<input type="text" id="searchBox" placeholder="Enter anything to get your top 10 wikipedia results..."/>
+    			<button class="btn btn-primary" id="searchBtn">Search</button>
+    			<a  href="https://en.wikipedia.org/wiki/Special:Random" target="_blank" class="btn btn-primary" id="randomBtn">Random</a>
+    		</div>
+		</div>
+	</div>
+  	<div id="resultBox"><div>
+  	
+  </div>
+
+  
+ 
+
+				
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+<script>
+
+	var userVar;
+	var url = "https://en.wikipedia.org/w/api.php?action=opensearch&search=";
+	var callBack = "&callback=?";
+
+
+	/*
+	* Run code after page loads 
+	*/
+	$(document).ready(function() {
+	
+		/*
+		* Method looks out for search button click and checks users input for errors 
+		* If no erros occurred getWiki() method is called  
+		*/
+		$("#searchBtn").on("click", function() { 
+			userVariable = $("#searchBox").val();
+			if (userVariable.length <= 0 || userVariable === " ") {
+				$("#resultBox").empty();
+				$("#resultBox").html("<div class='animated fadeInLeft' id='searchResults'><h4>Search is blank. Please try again.</h4></div>");	
+			} else {
+				getWiki(userVariable);
+			}
+		});
+		
+		
+		/*
+		* Method checks if user push enter on the keyboard.
+		* The method then calls the click function 
+		*/
+		$('#searchBox').keypress(function(e){
+        	if(e.which == 13){//Enter key pressed
+            	$("#searchBtn").click();//Trigger search button click event
+        	}
+    	});
+
+	});
+	
+
+	/*
+	* Method gets JSON data from Wikipedia API and publishes the data in HTML
+	*/
+	function getWiki(x) {
+		$.getJSON(url + x + callBack, function(jsonData) {
+
+			if (jsonData[1].length == 0 || jsonData[1].length == null) {
+				
+				$("#resultBox").empty();
+				$("#resultBox").html("<div class='animated fadeInLeft' id='searchResults'><h4>Unable to find information on your search. Please check spelling or try again.</h4></div>");
+			} else {
+				$("#resultBox").empty();
+				var seconds = 0.5;
+				for(var i = 0; i < jsonData[1].length; i++) {
+					$("#resultBox").append("<a id='resultStyles' href='" + jsonData[3][i] + "' target='_blank'><div style='animation-delay: " + seconds + "s' class='animated fadeInLeft' id='searchResults'><h3>"+jsonData[1][i]+"</h3><h5>"+jsonData[2][i]+"</h5></div></a>");				
+					seconds += 0.25;
+				}
+			}
+		
+		});
+	
+	}
+	
+
+
+</script>
+
+</body>
+</html>
